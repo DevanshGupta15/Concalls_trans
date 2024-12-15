@@ -1,0 +1,134 @@
+<div class="min-h-screen bg-gradient-to-br from-pink-100 via-purple-200 to-indigo-200 p-8">
+  <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
+    
+    <!-- Mac Title Bar -->
+    <div class="flex items-center justify-between p-3 bg-gray-100 rounded-t-2xl shadow-inner">
+      <div class="flex space-x-2">
+        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+        <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+      </div>
+      <h1 class="text-2xl font-semibold text-gray-700">Concall Earning Transcript Analyzer</h1>
+      <div></div>
+    </div>
+
+    <div class="p-8">
+      <!-- PDF Upload Section -->
+      <div class="mb-8">
+        <label class="block text-gray-700 text-lg font-semibold mb-4">
+          Upload Earnings Call Transcript (PDF)
+        </label>
+        
+        <!-- File Upload Area -->
+        <div class="flex items-center justify-center border-2 border-dashed border-gray-300 p-10 rounded-lg group hover:border-blue-500 transition duration-300 ease-in-out">
+          <input type="file" (change)="onFileSelected($event)" class="hidden" accept=".pdf" id="pdfUpload" />
+          <label for="pdfUpload" class="cursor-pointer text-center">
+            <!-- <div *ngIf="!selectedFile">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-12 h-12 text-gray-500 group-hover:text-blue-500 transition duration-300 ease-in-out">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8V16M8 12h8" />
+              </svg>
+              <p class="mt-4 text-lg font-medium text-gray-700 group-hover:text-blue-500 transition duration-300 ease-in-out">
+                Click to Upload PDF
+              </p>
+            </div> -->
+            <div *ngIf="!selectedFile" class="flex items-center justify-center">
+              <!-- "+" Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-12 h-12 text-gray-500 group-hover:text-blue-500 transition duration-300 ease-in-out">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8V16M8 12h8" />
+              </svg>
+              <p class="mt-4 ml-2 text-lg font-medium text-gray-700 group-hover:text-blue-500 transition duration-300 ease-in-out">
+                Click to Upload PDF
+              </p>
+            </div>
+            
+            <div *ngIf="selectedFile">
+              <p class="mt-4 text-lg font-medium text-gray-700">
+                File Selected: {{ selectedFile.name }}
+              </p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Analyze Button -->
+      <div class="flex justify-center">
+        <button (click)="analyzeTranscript()" [disabled]="!selectedFile"
+          class="px-6 py-3 bg-gradient-to-r from-teal-400 to-cyan-500 text-white rounded-full hover:from-teal-500 hover:to-cyan-600 transition duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 shadow-lg focus:outline-none">
+          {{ isLoading ? 'Analyzing...' : 'Analyze Transcript' }}
+        </button>
+      </div>
+
+      <!-- Loading Shadow Effect -->
+      <div *ngIf="isLoading" class="flex justify-center mt-6">
+        <div class="w-12 h-12 border-t-4 border-teal-500 rounded-full animate-spin shadow-2xl"></div>
+      </div>
+
+      <!-- Analysis Results -->
+      <div *ngIf="analysisResult && !isLoading"
+        class="mt-10 bg-gray-50 p-6 rounded-lg shadow-lg transition-transform duration-300 transform hover:scale-105">
+        <h2 class="text-3xl font-semibold mb-4 text-gray-800">Analysis Insights</h2>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Key Questions Card -->
+          <div
+            class="bg-gradient-to-r from-yellow-300 to-red-400 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <h3 class="font-semibold text-white mb-3 text-xl">Key Questions</h3>
+            <ul class="list-disc pl-5 text-gray-800">
+              <li *ngFor="let question of analysisResult.keyQuestions">
+                {{ question }}
+              </li>
+            </ul>
+          </div>
+
+          <!-- Sentiment Card -->
+          <div
+            class="bg-gradient-to-r from-green-300 to-teal-400 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <h3 class="font-semibold text-white mb-3 text-xl">Sentiment</h3>
+            <p class="text-gray-800">
+              {{ analysisResult.sentiment }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Actionable Insights Card -->
+        <div
+          class="mt-8 bg-gradient-to-r from-purple-400 to-pink-500 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <h3 class="font-semibold text-white mb-3 text-xl">Actionable Insights</h3>
+          <p class="text-gray-800">
+            {{ analysisResult.actionableInsights }}
+          </p>
+        </div>
+
+        <!-- Critical Trends Card -->
+        <div
+          class="mt-8 bg-gradient-to-r from-cyan-400 to-blue-500 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <h3 class="font-semibold text-white mb-3 text-xl">Critical Trends</h3>
+          <ul class="list-disc pl-5 text-gray-800">
+            <li *ngFor="let trend of analysisResult.criticalTrends">
+              {{ trend }}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Growth Indicators Card -->
+        <div
+          class="mt-8 bg-gradient-to-r from-indigo-400 to-purple-500 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <h3 class="font-semibold text-white mb-3 text-xl">Forward-looking Growth Indicators</h3>
+          <ul class="list-disc pl-5 text-gray-800">
+            <li *ngFor="let indicator of analysisResult.growthIndicators">
+              {{ indicator }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Error Handling -->
+      <div *ngIf="errorMessage"
+        class="mt-6 bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg shadow-md">
+        {{ errorMessage }}
+      </div>
+    </div>
+  </div>
+</div>
+
+

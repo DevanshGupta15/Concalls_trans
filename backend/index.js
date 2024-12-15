@@ -126,6 +126,14 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+
+app.use(express.static('concallfrontend/browser'))
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'concallfrontend/browser', 'index.html'));
+});
+
+
 // Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
