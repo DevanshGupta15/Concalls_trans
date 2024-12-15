@@ -8,7 +8,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:concallfrontend": "node dist/frontend/server/server.mjs"
+    "serve:ssr:concallfrontend": "node dist/frontend/server/server.mjs",
+    "vercel-build": "ng build --prod"
   },
   "private": true,
   "dependencies": {
