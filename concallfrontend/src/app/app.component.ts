@@ -70,7 +70,7 @@ export class AppComponent {
       console.log(pair[0], pair[1]);
     }
   
-    axios.post('http://localhost:3000/api/analyze-transcript', formData, {
+    axios.post('/api/analyze-transcript', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
