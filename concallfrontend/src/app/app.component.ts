@@ -71,7 +71,8 @@ export class AppComponent {
     }
   
     axios
-      .post('http://localhost:10000/api/analyze-transcript', formData, {
+      // .post('http://localhost:10000/api/analyze-transcript', formData, {
+        axios.post('https://your-backend-url.onrender.com/api/analyze-transcript', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
