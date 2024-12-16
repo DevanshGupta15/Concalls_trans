@@ -158,7 +158,6 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-CORS_ORIGIN
 app.use(express.static('concallfrontend/browser'))
 
 app.get('*', (req, res) => {
