@@ -8,12 +8,18 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
+// app.use(cors({
+//     // origin: process.env.CORS_ORIGIN,
+//     origin: 'http://localhost:10000',
+//     methods: ['GET', 'POST', 'OPTIONS'],
+//     allowedHeaders: ['Content-Type', 'Authorization']
+//   }));
 app.use(cors({
-    // origin: process.env.CORS_ORIGIN,
-    origin: 'http://localhost:10000',
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-  }));
+  origin: process.env.CORS_ORIGIN || 'http://localhost:4200' || 'http://localhost:10000', // Local for testing
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // Initialize Gemini AI
@@ -137,6 +143,11 @@ app.get('*', (req, res) => {
 
 // Start Server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
+
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
