@@ -14,11 +14,36 @@ const app = express();
 //     methods: ['GET', 'POST', 'OPTIONS'],
 //     allowedHeaders: ['Content-Type', 'Authorization']
 //   }));
+// app.use(cors({
+//   origin: process.env.CORS_ORIGIN || 'http://localhost:4200' || 'http://localhost:10000', // Local for testing
+//   methods: ['GET', 'POST', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization']
+// }));
+
+// Dynamically set allowed origins
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:4200',
+  'http://localhost:10000',
+  'https://concalls-trans-3.onrender.com'
+];
+
+// CORS configuration
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:4200' || 'http://localhost:10000', // Local for testing
+  origin: function(origin, callback){
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if(!origin) return callback(null, true);
+    
+    if(allowedOrigins.indexOf(origin) === -1){
+      var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 
 app.use(express.json());
 
@@ -133,7 +158,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-
+CORS_ORIGIN
 app.use(express.static('concallfrontend/browser'))
 
 app.get('*', (req, res) => {
