@@ -20,12 +20,14 @@ const app = express();
 //   allowedHeaders: ['Content-Type', 'Authorization']
 // }));
 
-app.use(cors({
-  // origin: process.env.CORS_ORIGIN,
-  origin: '*',
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+// app.use(cors({
+//   // origin: process.env.CORS_ORIGIN,
+//   origin: '*',
+//   methods: ['GET', 'POST', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization']
+// }));
+
+app.use(cors())
 
 
 app.use(express.json());
